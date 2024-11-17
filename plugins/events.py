@@ -3,7 +3,6 @@ from typing import Callable
 
 from khl import Bot, Event, EventTypes
 
-from .globals import in_game
 
 def events(event: str, **kwargs):
     def select(**kwargs):

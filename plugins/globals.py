@@ -1,5 +1,6 @@
 import json
 
+
 with open('config.json', 'r', encoding='utf-8') as f:
     data: dict = json.load(f)
 NAME : str  = data.get('name', '牧野澄夏')

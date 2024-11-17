@@ -1,5 +1,6 @@
 import random
 
+
 def randlist(times: int, max: int) -> list[int]:
     output: list[int] = []
     for _ in range(times):

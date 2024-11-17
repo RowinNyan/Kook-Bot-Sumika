@@ -1,5 +1,6 @@
 from khl import Bot, Message
 
+
 def initCommands(bot: Bot) -> None:
     @bot.command(name='game',
                  aliases=['游戏'],
