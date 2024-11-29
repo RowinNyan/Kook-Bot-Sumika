@@ -11,6 +11,7 @@ class Roulette(MultiGame):
     _hp: list[int]
     _bullets: list[bool]
     _items: list[list[int]]
+    _cut: bool
 
     def __init__(self, num: int):
         super().__init__(num=num)
@@ -20,6 +21,7 @@ class Roulette(MultiGame):
         self._hp = []
         self._bullets = []
         self._items = []
+        self._cut = False
 
     def isEnd(self) -> bool:
         if self._hp.count(0) == self._max_num-1: return True
@@ -50,12 +52,13 @@ class Roulette(MultiGame):
                 nums = []
                 for j in range(8): nums.append(newi.count(j))
                 output.append(nums)
-        return 
+        return output
     
     def shoot(self, target: int) -> bool:
         bullet = self._bullets.pop(0)
         if bullet:
-            self._hp[target] -= 1
+            self._hp[target] -= 1 + int(self._cut)
+            self._cut = False
             self.next()
         else:
             if target != self._turn: self.next()
@@ -69,20 +72,24 @@ class Roulette(MultiGame):
                 raise Exception
             else:
                 return self._bullets[random.randint(3, len(self._bullets)-1)]
-        def smoke(id: int):
+        def smoke(id: int) -> None:
             self._hp[id] = self._hp[id] + 1 if self._hp[id] < 4 else 4
-        def remote():
+            return
+        def remote() -> None:
             self._next = -self._next
-        def lock():
+            return
+        def lock() -> None:
             ...
-        def beer():
+        def beer() -> bool:
             return self._bullets.pop(0)
-        def thief():
+        def thief() -> None:
             ...
         def change() -> None:
             self._bullets[0] = not self._bullets[0]
-        def knife():
-            ...
+            return
+        def knife() -> None:
+            self._cut = True
+            return
         items: dict[str, Callable] = dict([i for i in locals().items() if isinstance(i[1], Callable)])
         item_id: dict[int, str] = {i: items[i] for i in range(8)}
         result = items[item](*args, **kwargs)
